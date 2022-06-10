@@ -163,12 +163,13 @@ mat4 ctm;
 matrix_stack stack;
 
 GLfloat theta[] = { 0,0,0,0 };
+GLfloat choisang = 0.0;
 void paintColor(GLfloat a, GLfloat b, GLfloat c) {
 	/* Khởi tạo các tham số chiếu sáng - tô bóng*/
 	point4 light_position(0.0, 1.9, 0.0, 0.0);
 	color4 light_ambient(0.2, 0.2, 0.2, 1.0);
 	color4 light_diffuse(mauAnhSang, mauAnhSang, mauAnhSang, 1.0);
-	color4 light_specular(0.0, 0.0, 0.0, 1.0);
+	color4 light_specular(choisang, choisang, choisang, 1.0);
 
 	color4 material_ambient(1.0, 0.0, 1.0, 1.0);
 	color4 material_diffuse(a / 255.0, b / 255.0, c / 255.0, 1.0);
@@ -193,7 +194,12 @@ void veTuong() {
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, ctm);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
 	ctm = stack.pop();
-
+	//Tường truoc
+	/*stack.push(ctm);
+	ctm *= Translate(0, 0, -7.0) * Scale(9.0, 5.0, 0.05);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, ctm);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	ctm = stack.pop();*/
 	//Tường trước
 	/*stack.push(ctm);
 	ctm *= Translate(0, 0, -2.5)* Scale(5.0, 5.0, 0.05);
@@ -257,9 +263,159 @@ void veTuongVaCuaRaVao() {
 }
 //huan
 
+//mat4 ctmHuan;
+//mat4 Model_BanHuan;
+//mat4 ctm_banHuan;
+//void matban(GLfloat w, GLfloat l, GLfloat h)
+//{
+//	ctmHuan = Scale(w, h, l);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
+//void chanban(GLfloat w, GLfloat h, GLfloat l)
+//{
+//	ctmHuan = Scale(w, h, l);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
+//void KeDuoi(GLfloat w, GLfloat h, GLfloat l)
+//{
+//	ctmHuan = Scale(w, h, l);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
+//GLfloat gocquay = 0.0;
+//void cuatu() {
+//	ctmHuan = Scale(0.3, 0.3, 0.3) * Scale(0.4, 0.2, 0.02);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/
+//}
+//void tu() {
+//	paintColor(250, 200, 35);//Màu nâu
+//	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.0, -0.29, 0.0) * Scale(0.4, 0.02, 0.4);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/
+//
+//	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.0, 0.0, 0.2) * Scale(0.4, 0.6, 0.02);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/
+//
+//	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.2, 0.0, 0.0) * Scale(0.02, 0.6, 0.4);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/
+//
+//	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(-0.2, 0.0, 0.0) * Scale(0.02, 0.6, 0.4);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/\
+//
+//	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.0, 0.29, 0.0) * Scale(0.4, 0.02, 0.4);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//
+//	//paintColor(0, 0, 0);//Màu vàng
+//	////ctm_banHuan = Translate(-0.21f, -0.15f, -0.0f) ;
+//	//Model_BanHuan *= Scale(0.3, 0.3, 0.3) * Translate(0.2, 0.0, -0.2) * RotateY(gocquay) * Translate(-0.2, 0.0, 0.0);
+//	//cuatu();
+//	paintColor(0, 0, 80);//Màu vàng
+//	//case maytinh
+//	ctmHuan = Translate(0.0, 0.0, 0.0) * Scale(0.08, 0.1, 0.11);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
+//void manhinh() {
+//	//tren
+//	ctmHuan = Translate(0.12, 0.08, -0.01) * Scale(0.2f, 0.01f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	//duoi
+//	ctmHuan = Translate(0.12, 0.2, -0.01) * Scale(0.2f, 0.01f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	//trai
+//	ctmHuan = Translate(0.22, 0.135, -0.01) * Scale(0.01f, 0.12f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	//phai
+//	ctmHuan = Translate(0.02, 0.135, -0.01) * Scale(0.01f, 0.12f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	ctmHuan = Translate(0.12, 0.14, -0.005) * Scale(0.19f, 0.11f, 0.005f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	paintColor(80, 255, 255);
+//	ctmHuan = Translate(0.12, 0.14, -0.01) * Scale(0.19f, 0.11f, 0.005f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
+//GLfloat quayman = 0.0;
+//GLfloat dcman = 0.0;
+//void lap() {
+//	paintColor(0, 0, 0);
+//	//de
+//	
+//	Model_BanHuan *= Translate(dcman, 0.0, 0.0);
+//	ctmHuan = Translate(0.12, 0.01, 0.0) * Scale(0.1f, 0.01f, 0.05f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	//ke
+//	ctmHuan = Translate(0.12, 0.05, 0.01) * RotateX(-10) * Scale(0.05f, 0.08f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//	//man hinh
+//	//ctm_banHuan = Translate(0.0,0.0,0.1);
+//	ctm_banHuan = Translate(0.0, 0.10, 0.0) * RotateX(quayman) * Translate(0.0, -0.10, 0.0);
+//	manhinh();
+//
+//}
+//
+//
+//void ban()
+//{
+//	paintColor(250, 200, 35);//Màu nâu
+//	matban(0.6f, 0.4f, 0.01f);
+//	//giua
+//	ctm_banHuan = Translate(0.0f, -0.3f, 0.0f);
+//	chanban(0.02f, 0.02f, 0.3f);
+//	ctm_banHuan = Translate(0.0f, -0.15f, 0.0f);
+//	chanban(0.02f, 0.3f, 0.1);
+//	//trai
+//	ctm_banHuan = Translate(0.27f, -0.3f, 0.0f);
+//	chanban(0.02f, 0.02f, 0.3f);
+//	ctm_banHuan = Translate(0.27f, -0.15f, 0.0f);
+//	chanban(0.02f, 0.3f, 0.1);
+//	//phai
+//	ctm_banHuan = Translate(-0.27f, -0.3f, 0.0f);
+//	chanban(0.02f, 0.02f, 0.3f);
+//	ctm_banHuan = Translate(-0.27f, -0.15f, 0.0f);
+//	chanban(0.02f, 0.3f, 0.1);
+//	//ke duoi
+//	//paintColor(0, 0, 0);//Màu vàng
+//	ctm_banHuan = Translate(-0.0f, -0.05f, -0.14f);
+//	KeDuoi(0.6f, 0.01f, 0.2f);
+//
+//	//tu 1
+//	ctm_banHuan = Translate(0.06f, -0.15f, 0.04f);
+//	tu();
+//	//paintColor(0, 0, 0);//Màu đen
+//	ctm_banHuan *= Translate(-0.06, 0.0, -0.1) * RotateY(gocquay) * Translate(0.06, 0.0, -0.00);
+//	cuatu();
+//
+//	//tu 2
+//	ctm_banHuan = Translate(-0.19f, -0.15f, 0.04f);
+//	tu();
+//	//paintColor(0, 0, 0);//Màu đen
+//	ctm_banHuan *= Translate(-0.06, 0.0, -0.1) * RotateY(gocquay) * Translate(0.06, 0.0, -0.00);
+//	cuatu();
+//	ctm_banHuan = identity();
+//	lap();
+//	ctm_banHuan = identity();
+//	Model_BanHuan *= Translate(-0.25-dcman, 0.0, 0);
+//	lap();
+//}
 mat4 ctmHuan;
 mat4 Model_BanHuan;
 mat4 ctm_banHuan;
+
 void matban(GLfloat w, GLfloat l, GLfloat h)
 {
 	ctmHuan = Scale(w, h, l);
@@ -302,7 +458,7 @@ void tu() {
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/\
 
-	ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.0, 0.29, 0.0) * Scale(0.4, 0.02, 0.4);
+		ctmHuan = Scale(0.3, 0.3, 0.5) * Translate(0.0, 0.29, 0.0) * Scale(0.4, 0.02, 0.4);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
 
@@ -310,13 +466,83 @@ void tu() {
 	////ctm_banHuan = Translate(-0.21f, -0.15f, -0.0f) ;
 	//Model_BanHuan *= Scale(0.3, 0.3, 0.3) * Translate(0.2, 0.0, -0.2) * RotateY(gocquay) * Translate(-0.2, 0.0, 0.0);
 	//cuatu();
-	paintColor(0, 0, 80);//Màu vàng
+	paintColor(-255, -255, -255);//Màu vàng
 	//case maytinh
 	ctmHuan = Translate(0.0, 0.0, 0.0) * Scale(0.08, 0.1, 0.11);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
 }
+void manPC() {
+	GLfloat gocquayman = 0.0;
+	//vong tron
+	ctm_banHuan *= Translate(0.12, 0.15, -0.015) * Scale(0.05, 0.05, 0.05);
+	paintColor(500, 500, 500);
+	for (int i = 0; i < 360; i++)
+	{
+		gocquayman += 1.0;
+		ctmHuan = RotateZ(gocquayman) * Translate(0.5, 0, 0) * Scale(0.01f, 0.01f, 0.01f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	}
+	//chu D
+	//ctm_banHuan = Translate(0.42, 0, 0);
+	ctmHuan = Translate(0.42, 0, 0) * Scale(0.05f, 0.35f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	gocquayman = 90;
+	for (int i = 0; i < 180; i++)
+	{
+		gocquayman += 1.0;
+		ctmHuan = Translate(0.42, 0, 0) * RotateZ(gocquayman) * Translate(0.155, 0, 0) * Scale(0.05f, 0.01f, 0.01f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	}
+	//chu E
+	//ctm_banHuan =Translate(0.15, -0.05 ,0)* RotateZ(-45) * Scale(0.9,0.9,0.9);
+	ctmHuan = Translate(0.15, -0.05, 0) * RotateZ(-45) * Scale(0.9, 0.9, 0.9) * Translate(0.0, 0, 0) * Scale(0.05f, 0.35f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	ctmHuan = Translate(0.15, -0.05, 0) * RotateZ(-45) * Scale(0.9, 0.9, 0.9) * Translate(-0.1, 0, 0) * Scale(0.15f, 0.05f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	ctmHuan = Translate(0.15, -0.05, 0) * RotateZ(-45) * Scale(0.9, 0.9, 0.9) * Translate(-0.1, 0.145, 0) * Scale(0.15f, 0.05f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	ctmHuan = Translate(0.15, -0.05, 0) * RotateZ(-45) * Scale(0.9, 0.9, 0.9) * Translate(-0.1, -0.145, 0) * Scale(0.15f, 0.05f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	//Chu L
+	//ctm_banHuan = Translate(-0.09, 0, 0);
+	ctmHuan = Translate(-0.09, 0, 0) * Translate(0.0, -0.0, 0) * Scale(0.05f, 0.35f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	ctmHuan = Translate(-0.09, 0, 0) * Translate(-0.09, -0.145, 0) * Scale(0.13f, 0.05f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	//ctm_banHuan = Translate(-0.3, 0, 0);
+	ctmHuan = Translate(-0.3, 0, 0) * Translate(0.0, -0.0, 0) * Scale(0.05f, 0.35f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+	ctmHuan = Translate(-0.3, 0, 0) * Translate(-0.09, -0.145, 0) * Scale(0.13f, 0.05f, 0.01f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	/*ctmHuan = RotateZ(gocquay)* Translate(0.5, 0, 0) * Scale(0.01f, 0.01f, 0.01f) ;
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);*/
+	//ke
+}
+GLfloat man = 0;
+
 void manhinh() {
+	paintColor(-255, -255, -255);
+	choisang = 0.8;
 	//tren
 	ctmHuan = Translate(0.12, 0.08, -0.01) * Scale(0.2f, 0.01f, 0.01f);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
@@ -326,27 +552,94 @@ void manhinh() {
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
 	//trai
-	ctmHuan = Translate(0.22, 0.135, -0.01) * Scale(0.01f, 0.12f, 0.01f);
+	ctmHuan = Translate(0.22, 0.14, -0.01) * Scale(0.01f, 0.13f, 0.01f);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
 	//phai
-	ctmHuan = Translate(0.02, 0.135, -0.01) * Scale(0.01f, 0.12f, 0.01f);
+	ctmHuan = Translate(0.02, 0.14, -0.01) * Scale(0.01f, 0.13f, 0.01f);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
-	ctmHuan = Translate(0.12, 0.14, -0.005) * Scale(0.19f, 0.11f, 0.005f);
+
+	//man goc
+	paintColor(-0, -0, -0);
+	ctmHuan = Translate(0.12, 0.14, -0.004) * Scale(0.19f, 0.11f, 0.005f);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
-	paintColor(80, 255, 255);
-	ctmHuan = Translate(0.12, 0.14, -0.01) * Scale(0.19f, 0.11f, 0.005f);
-	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+
+	/*paintColor(-255, -255,-255);
+	ctmHuan = Translate(0.12, 0.14, -0.01)  * Scale(0.19f, 0.11f, 0.005f);
+	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);*/
+
+
+	//man da khoi dong
+
+
+	//bieu tuong window
+	if (man == 2) {
+		paintColor(1, 175, 248);
+		ctmHuan = Translate(0.12, 0.14, -0.005) * Scale(0.19f, 0.11f, 0.005f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(500, 500, 500);
+		ctmHuan = Translate(0.06, 0.14, -0.005) * Scale(0.02f, 0.02f, 0.02f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(1, 175, 248);
+		ctmHuan = Translate(0.06, 0.14, -0.005) * Scale(0.017f, 0.017f, 0.025f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(500, 500, 500);
+		ctmHuan = Translate(0.06, 0.165, -0.005) * Scale(0.02f, 0.02f, 0.02f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(1, 175, 248);
+		ctmHuan = Translate(0.06, 0.165, -0.005) * Scale(0.017f, 0.017f, 0.025f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(500, 500, 500);
+		ctmHuan = Translate(0.085, 0.165, -0.005) * Scale(0.02f, 0.02f, 0.02f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(1, 175, 248);
+		ctmHuan = Translate(0.085, 0.165, -0.005) * Scale(0.017f, 0.017f, 0.025f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(500, 500, 500);
+		ctmHuan = Translate(0.085, 0.14, -0.005) * Scale(0.02f, 0.02f, 0.02f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+
+		paintColor(1, 175, 248);
+		ctmHuan = Translate(0.085, 0.14, -0.005) * Scale(0.017f, 0.017f, 0.025f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+		//tabar
+		paintColor(-255, -255, -255);
+		ctmHuan = Translate(0.12, 0.095, -0.006) * Scale(0.19f, 0.02f, 0.005f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+	}
+
+
+
 	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	if (man == 1) {
+		manPC();
+
+	}
+	choisang = 0.0;
 }
-GLfloat quayman = 0.0;
 GLfloat dcman = 0.0;
+GLfloat quayman = 0.0;
 void lap() {
-	paintColor(0, 0, 0);
+	paintColor(-255, -255, -255);
 	//de
-	
 	Model_BanHuan *= Translate(dcman, 0.0, 0.0);
 	ctmHuan = Translate(0.12, 0.01, 0.0) * Scale(0.1f, 0.01f, 0.05f);
 	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
@@ -363,6 +656,12 @@ void lap() {
 }
 
 
+//void banphim() {
+//	paintColor()
+//	ctmHuan = Translate(0.12, 0.05, 0.01) * RotateX(-10) * Scale(0.05f, 0.08f, 0.01f);
+//	glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+//	glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+//}
 void ban()
 {
 	paintColor(250, 200, 35);//Màu nâu
@@ -384,29 +683,53 @@ void ban()
 	chanban(0.02f, 0.3f, 0.1);
 	//ke duoi
 	//paintColor(0, 0, 0);//Màu vàng
-	ctm_banHuan = Translate(-0.0f, -0.05f, -0.14f);
+	ctm_banHuan = Translate(-0.0f, -0.06f, -0.14f);
 	KeDuoi(0.6f, 0.01f, 0.2f);
 
+	//banphim
+	paintColor(-50, -50, -50);//Màu vàng
+	ctm_banHuan = Translate(0.17f, -0.04f, -0.14f);
+	KeDuoi(0.2f, 0.01f, 0.15f);
+
+	//banphim
+	ctm_banHuan = Translate(-0.11f, -0.04f, -0.14f);
+	KeDuoi(0.2f, 0.01f, 0.15f);
+
+	//chuot
+	ctm_banHuan = Translate(0.02f, -0.05f, -0.1f);
+	KeDuoi(0.03f, 0.01f, 0.07f);
+
+	paintColor(250, 200, 35);//Màu nâu
+	ctm_banHuan = Translate(0.02f, -0.04f, -0.1f);
+	KeDuoi(0.01f, 0.01f, 0.01f);
+
+	paintColor(-50, -50, -50);//Màu đen
+	ctm_banHuan = Translate(-0.25f, -0.05f, -0.1f);
+	KeDuoi(0.03f, 0.01f, 0.07f);
+
+	paintColor(250, 200, 35);//Màu nâu
+	ctm_banHuan = Translate(-0.25f, -0.04f, -0.1f);
+	KeDuoi(0.01f, 0.01f, 0.01f);
 	//tu 1
-	ctm_banHuan = Translate(0.06f, -0.15f, 0.04f);
+	ctm_banHuan = Translate(0.07f, -0.15f, 0.04f);
 	tu();
-	//paintColor(0, 0, 0);//Màu đen
+	paintColor(250, 200, 35);//Màu nâu
 	ctm_banHuan *= Translate(-0.06, 0.0, -0.1) * RotateY(gocquay) * Translate(0.06, 0.0, -0.00);
 	cuatu();
 
 	//tu 2
 	ctm_banHuan = Translate(-0.19f, -0.15f, 0.04f);
 	tu();
-	//paintColor(0, 0, 0);//Màu đen
+	paintColor(250, 200, 35);//Màu nâu
 	ctm_banHuan *= Translate(-0.06, 0.0, -0.1) * RotateY(gocquay) * Translate(0.06, 0.0, -0.00);
 	cuatu();
 	ctm_banHuan = identity();
 	lap();
 	ctm_banHuan = identity();
-	Model_BanHuan *= Translate(-0.25-dcman, 0.0, 0);
+	Model_BanHuan *= Translate(-0.25 - dcman, 0.0, 0);
 	lap();
+	//banphim();
 }
-
 
 GLfloat mauDen = 255;
 
@@ -463,9 +786,44 @@ void dayban() {
 	dayban3();
 	dayban4();
 }
+
+void rem() {
+	GLfloat gocquayman = 0.0;
+	//vong tron
+	ctm_banHuan *= Translate(0.12, 0.15, 0.15) * Scale(0.05, 0.05, 0.05);
+	paintColor(0, 250, 0);
+	for (int i = 0; i < 180; i++)
+	{
+		gocquayman += 1.0;
+		ctmHuan = RotateY(gocquayman) * Translate(0.5, 0, 0) * Scale(0.01f, 9.5f, 0.01f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	}
+
+	gocquayman = 0.0;
+	ctm_banHuan *= Translate(0.9, 0.0, -0);
+	paintColor(20, 100, 29);
+	for (int i = 0; i < 180; i++)
+	{
+		gocquayman += 1.0;
+		ctmHuan = RotateY(gocquayman) * Translate(-0.5, 0, 0) * Scale(0.01f, 9.5f, 0.01f);
+		glUniformMatrix4fv(matrix_loc, 1, GL_TRUE, Model_BanHuan * ctm_banHuan * ctmHuan);
+		glDrawArrays(GL_TRIANGLES, 0, NumPoints);
+	}
+}
+void dayrem() {
+	GLfloat kcrem;
+	ctm_banHuan = identity();
+	for (int i = 0; i < 11; i++)
+	{
+		rem();
+		ctm_banHuan = Translate(0.09 * i, 0.0, 0.0);
+	}
+
+}
 //endhuan
 
-
+GLfloat screm = 1.0, dcrem = 0.0;
 GLfloat eyeX = 1.0, eyeZ = -8.0;
 void display(void)
 {
@@ -480,6 +838,8 @@ void display(void)
 	
 	dayban();
 	
+	Model_BanHuan = Translate(0,0,dcrem) * Scale(1.0,1.0, screm) * Translate(3.2,-1.0,5) * RotateY(90)* Scale(7,7,7);
+	dayrem();
 	vec4 eye(eyeX, 4.0, eyeZ, 1);
 	vec4 at(0, 0, 0, 1);
 	vec4 up(0, 1, 0, 1);
@@ -499,6 +859,22 @@ void resharp(GLint w, GLint h)
 //GLfloat round1(GLfloat x) {
 //	return roundf(x * 10) / 10;
 //}
+enum { Xaxis = 0, Yaxis = 1, Zaxis = 2, NumAxes = 3 };
+int Axis = Xaxis;
+GLfloat Theta1[NumAxes] = { 0.0, 0.0, 0.0 };
+
+void spinCube(void)
+{
+	Theta1[Axis] += 0.5;
+	if (Theta1[Axis] >= 120.0) {
+		man = 1;
+	}
+	else if (Theta1[Axis] == 250.0) {
+		man = 2;
+	}
+
+	glutPostRedisplay();
+}
 bool batden = true;
 void keyboard(unsigned char key, int x, int y)
 {
@@ -512,7 +888,49 @@ void keyboard(unsigned char key, int x, int y)
 		gocquay += 5.5;
 		if (gocquay >= 180)gocquay -= 5.5;
 		glutPostRedisplay();
-
+	case 'A':
+		gocquay -= 5.5;
+		if (gocquay <= 0)gocquay += 5.5;
+		glutPostRedisplay();
+		break;
+	case 'r':
+		screm -= 0.1;
+		dcrem += 0.4;
+		glutPostRedisplay();
+		break;
+	case 'R':
+		screm += 0.1;
+		dcrem -= 0.4;
+		glutPostRedisplay();
+		break;
+		//glutIdleFunc(spinCube);
+	case 'h':
+		man = 1;
+		glutPostRedisplay();
+		//glutIdleFunc(spinCube);
+		break;
+	case 'H':
+		man = 2;
+		glutPostRedisplay();
+		break;
+	case 'q':
+		dc += 0.1;
+		glutPostRedisplay();
+		break;
+	case 'Q':
+		dc -= 0.1;
+		glutPostRedisplay();
+		break;
+	case 'z':
+		quayman += 5.0;
+		if (quayman >= 35) quayman -= 5.0;
+		glutPostRedisplay();
+		break;
+	case 'Z':
+		quayman -= 5.0;
+		if (quayman <= 0) quayman += 5.0;
+		glutPostRedisplay();
+		break;
 		break;
 	case 'b':
 		dcman += 0.01;
@@ -526,9 +944,9 @@ void keyboard(unsigned char key, int x, int y)
 		glutPostRedisplay();
 
 		break;
-	case 'z':
-		quayman += 5.0;
-		if (quayman >= 35) quayman -= 5.0;
+	case 't':
+		eyeX += 0.01;
+		eyeZ += 0.1;
 		glutPostRedisplay();
 		break;
 		//Di chuyển quạt sang trái
@@ -916,7 +1334,7 @@ int main(int argc, char **argv)
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
-	glutReshapeFunc(resharp);
+	//glutReshapeFunc(resharp);
 
 	glutMainLoop();
 	return 0;
